@@ -1,0 +1,800 @@
+<HTML>
+<STYLE TYPE="TEXT/CSS">
+TABLE.UML {
+	BORDER-WIDTH: 1PX 1PX 1PX 1PX;
+	BORDER-SPACING: 0PX;
+	BORDER-STYLE: SOLID SOLID SOLID SOLID;
+	BORDER-COLOR: BLACK BLACK BLACK BLACK;
+	BORDER-COLLAPSE: SEPARATE;
+	BACKGROUND-COLOR: WHITE;
+}
+
+CODE {
+	FONT-FAMILY: ARIAL;
+	FONT-SIZE: 80%;
+}
+
+PRE {
+	FONT-FAMILY: ARIAL;
+	FONT-SIZE: 80%;
+}
+
+H1 {
+	FONT-FAMILY: ARIAL;
+	FONT-SIZE: 144%;
+	FONT-STYLE: BOLD;
+}
+
+H2 {
+	FONT-FAMILY: ARIAL;
+	FONT-SIZE: 120%;
+	FONT-STYLE: BOLD;
+}
+
+H3 {
+	FONT-FAMILY: ARIAL;
+	FONT-SIZE: 100%;
+	FONT-STYLE: BOLD;
+}
+
+</STYLE>
+<HEAD>
+<TITLE>
+Knihovna</TITLE>
+</HEAD>
+<BODY>
+<H1>Knihovna</H1>
+<B>author&#40;s&#41;: </B>Carikov Leonid
+<BR>
+<P>
+Ukazka systemu knihovny
+</P>
+
+<BR>
+<HR>
+<H2>Workspace</H2>
+<PRE>Human select: [:a | a zeme_puvodu = &#39;Anglie&#39;]
+
+Book select: [:a | a datum_vydani year &gt; 1900 ]
+
+pobocka := Shop detect: [:s | s adresa = &#39;Jana Masaryka&#39;].
+vedouci := pobocka vedouci.</PRE>
+<H4>Workspace Objects</H4>
+<UL>
+
+<BR>
+<LI>
+<CODE>
+Book :Set
+</CODE>
+<LI>
+<CODE>
+Human :Set
+</CODE>
+<LI>
+<CODE>
+Rent :Set
+</CODE>
+<LI>
+<CODE>
+Shop :Set
+</CODE>
+<LI>
+<CODE>
+pobocka :Pobocka
+</CODE>
+<LI>
+<CODE>
+vedouci :Pracovnik
+</CODE>
+</UL>
+
+<BR>
+<HR>
+<H2>Script</H2>
+<PRE>| isNul |
+	Human := Set new.
+Book := Set new.
+Shop := Set new.
+Rent := Set new.
+
+o1 := Autor new.
+o1 jmeno: &#39;Alexandr&#39;.
+o1 prijmeni: &#39;Puskin&#39;.
+o1 zeme_puvodu: &#39;Rusko&#39;.
+o1 datum_narozeni: &#39;6 Jun 1799&#39; asDate.
+Human add: o1.
+
+o2 := Autor new.
+o2 jmeno: &#39;Karel&#39;.
+o2 prijmeni: &#39;Capek&#39;.
+o2 zeme_puvodu: &#39;Cesko&#39;.
+o2 datum_narozeni: &#39;9 Jan 1890&#39; asDate.
+Human add: o2.
+
+o3 := Autor new.
+o3 jmeno: &#39;George&#39;.
+o3 prijmeni: &#39;Orwell&#39;.
+o3 zeme_puvodu: &#39;Anglie&#39;.
+o3 datum_narozeni: &#39;25 Jun 1903&#39; asDate.
+Human add: o3.
+
+o4 := Autor new.
+o4 jmeno: &#39;Ernest&#39;.
+o4 prijmeni: &#39;Hamingway&#39;.
+o4 zeme_puvodu: &#39;Anglie&#39;.
+o4 datum_narozeni: &#39;21 Jul 1899&#39; asDate.
+Human add: o4.
+
+o5 := Zakaznik new.
+o5 jmeno: &#39;Leonid&#39;.
+o5 prijmeni: &#39;Carikov&#39;.
+o5 zeme_puvodu: &#39;Rusko&#39;.
+o5 cislo_zakaznika: &#39;12345&#39;.
+o5 datum_narozeni: &#39;10 Dec 2003&#39; asDate.
+Human add: o5.
+
+o6 := Zakaznik new.
+o6 jmeno: &#39;Vladimir&#39;.
+o6 prijmeni: &#39;Scerbakov&#39;.
+o6 zeme_puvodu: &#39;Cesko&#39;.
+o6 cislo_zakaznika: &#39;54321&#39;.
+o6 datum_narozeni: &#39;9 Nov 2002&#39; asDate.
+Human add: o6.
+
+o7 := Pracovnik new.
+o7 jmeno: &#39;Petr&#39;.
+o7 prijmeni: &#39;Blaha&#39;.
+o7 zeme_puvodu: &#39;Cesko&#39;.
+o7 pocatek_prace: &#39;14 Feb 2024&#39; asDate.
+o7 datum_narozeni: &#39;26 Nov 1999&#39; asDate.
+Human add: o7.
+
+o8 := Pracovnik new.
+o8 jmeno: &#39;Jakub&#39;.
+o8 prijmeni: &#39;Fiala&#39;.
+o8 zeme_puvodu: &#39;Slovensko&#39;.
+o8 pocatek_prace: &#39;1 Dec 2020&#39; asDate.
+o8 datum_narozeni: &#39;7 May 1987&#39; asDate.
+Human add: o8.
+
+b1 := Kniha new.
+b1 nazev: &#39;Starec a More&#39;.
+b1 datum_vydani: &#39;1 Sep 1952&#39; asDate.
+b1 zanr: &#39;Novela&#39;.
+b1 spisovatel: o4.
+Book add: b1.
+
+b2 := Kniha new.
+b2 nazev: &#39;1984&#39;.
+b2 datum_vydani: &#39;8 Jun 1949&#39; asDate.
+b2 zanr: &#39;Roman&#39;.
+b2 spisovatel: o3.
+Book add: b2.
+
+b3 := Kniha new.
+b3 nazev: &#39;Ruslan a Ludmila&#39;.
+b3 datum_vydani: &#39;1 Jan 1820&#39; asDate.
+b3 zanr: &#39;Poema&#39;.
+b3 spisovatel: o1.
+Book add: b3.
+
+b4 := Kniha new.
+b4 nazev: &#39;R.U.R.&#39;.
+b4 datum_vydani: &#39;1 Jan 1920&#39; asDate.
+b4 zanr: &#39;Drama&#39;.
+b4 spisovatel: o2.
+Book add: b4.
+
+s1 := Pobocka new.
+s1 adresa: &#39;Jana Masaryka&#39;.
+s1 cislo_popisne: &#39;10&#39;.
+s1 mesto: &#39;Praha&#39;.
+s1 psc: &#39;12000&#39;.
+s1 vedouci: o7.
+Shop add: s1.
+
+s2 := Pobocka new.
+s2 adresa: &#39;Veslarska&#39;.
+s2 cislo_popisne: &#39;199&#39;.
+s2 mesto: &#39;Brno&#39;.
+s2 psc: &#39;63700&#39;.
+s2 vedouci: o8.
+Shop add: s2.
+
+r1 := Pujceni new.
+r1 datum_pujceni: &#39;14 Nov 2024&#39; asDate.
+r1 datum_vraceni: &#39;20 Dec 2024&#39; asDate.
+r1 pujcovnik: o5.
+r1 co_pujcil: b1.
+r1 zpracoval: o7.
+Rent add: r1.
+
+r2 := Pujceni new.
+r2 datum_pujceni: &#39;1 Jun 2023&#39; asDate.
+r2 datum_vraceni: &#39;15 Jul 2023&#39; asDate.
+r2 pujcovnik: o6.
+r2 co_pujcil: b2.
+r2 zpracoval: o8.
+Rent add: r2.
+
+r3 := Pujceni new.
+r3 datum_pujceni: &#39;1 Jun 2025&#39; asDate.
+r3 datum_vraceni: isNul.
+r3 pujcovnik: o6.
+r3 co_pujcil: b3.
+r3 zpracoval: o8.
+Rent add: r3.</PRE>
+<HR>
+<H2>Diagram</H2>
+<IMG SRC="Knihovna.gif">
+<HR>
+<H2>Classes</H2>
+<TABLE BORDER="0" CELLPADDING="3" CELLSPACING="0" WIDTH=100%>
+<TR>
+<TD WIDTH=20%>
+<TABLE WIDTH=95% BORDER="1" CELLSPACING="0" BORDERCOLOR=BLACK>
+<TR><TD><BIG>
+<B><CODE>
+Pobocka
+</CODE></B>
+</BIG></TD></TR>
+<TR><TD>
+<I><SMALL>instance variables</SMALL></I><BR>
+<CODE>
+adresa :String
+</CODE>
+<BR>
+<CODE>
+cislo_popisne :String
+</CODE>
+<BR>
+<CODE>
+mesto :String
+</CODE>
+<BR>
+<CODE>
+psc :String
+</CODE>
+<BR>
+<CODE>
+vedouci :Object
+</CODE>
+<BR>
+</TD></TR>
+<TR><TD>
+<I><SMALL>methods</SMALL></I><BR>
+<CODE>
+adresa
+</CODE>
+<BR>
+<CODE>
+adresa:
+</CODE>
+<BR>
+<CODE>
+cislo_popisne
+</CODE>
+<BR>
+<CODE>
+cislo_popisne:
+</CODE>
+<BR>
+<CODE>
+initialize
+</CODE>
+<BR>
+<CODE>
+mesto
+</CODE>
+<BR>
+<CODE>
+mesto:
+</CODE>
+<BR>
+<CODE>
+psc
+</CODE>
+<BR>
+<CODE>
+psc:
+</CODE>
+<BR>
+<CODE>
+vedouci
+</CODE>
+<BR>
+<CODE>
+vedouci:
+</CODE>
+<BR>
+</TD></TR>
+</TABLE>
+</TD>
+<TD VALIGN="TOP">
+<P>
+
+</P>
+</TD>
+</TR>
+</TABLE>
+<H4>code of non-accessing methods: </H4>
+<UL>
+<LI>
+<B><CODE>
+initialize
+</CODE></B>
+<PRE>
+&quot;generated by Daskalos&quot;
+
+     super initialize.
+     adresa := nil.
+     cislo_popisne := nil.
+     mesto := nil.
+     psc := nil.
+     vedouci := nil.</PRE>
+</UL>
+<TABLE BORDER="0" CELLPADDING="3" CELLSPACING="0" WIDTH=100%>
+<TR>
+<TD WIDTH=20%>
+<TABLE WIDTH=95% BORDER="1" CELLSPACING="0" BORDERCOLOR=BLACK>
+<TR><TD><BIG>
+<B><CODE>
+Kniha
+</CODE></B>
+</BIG></TD></TR>
+<TR><TD>
+<I><SMALL>instance variables</SMALL></I><BR>
+<CODE>
+datum_vydani :Date
+</CODE>
+<BR>
+<CODE>
+nazev :String
+</CODE>
+<BR>
+<CODE>
+spisovatel :Object
+</CODE>
+<BR>
+<CODE>
+zanr :String
+</CODE>
+<BR>
+</TD></TR>
+<TR><TD>
+<I><SMALL>methods</SMALL></I><BR>
+<CODE>
+datum_vydani
+</CODE>
+<BR>
+<CODE>
+datum_vydani:
+</CODE>
+<BR>
+<CODE>
+initialize
+</CODE>
+<BR>
+<CODE>
+nazev
+</CODE>
+<BR>
+<CODE>
+nazev:
+</CODE>
+<BR>
+<CODE>
+puvod
+</CODE>
+<BR>
+<CODE>
+spisovatel
+</CODE>
+<BR>
+<CODE>
+spisovatel:
+</CODE>
+<BR>
+<CODE>
+zanr
+</CODE>
+<BR>
+<CODE>
+zanr:
+</CODE>
+<BR>
+</TD></TR>
+</TABLE>
+</TD>
+<TD VALIGN="TOP">
+<P>
+
+</P>
+</TD>
+</TR>
+</TABLE>
+<H4>code of non-accessing methods: </H4>
+<UL>
+<LI>
+<B><CODE>
+initialize
+</CODE></B>
+<PRE>
+&quot;generated by Daskalos&quot;
+
+     super initialize.
+     nazev := nil.
+     datum_vydani := nil.
+     zanr := nil.
+     spisovatel := nil.</PRE>
+<LI>
+<B><CODE>
+puvod
+</CODE></B>
+<PRE>
+	^spisovatel zeme_puvodu</PRE>
+</UL>
+<TABLE BORDER="0" CELLPADDING="3" CELLSPACING="0" WIDTH=100%>
+<TR>
+<TD WIDTH=20%>
+<TABLE WIDTH=95% BORDER="1" CELLSPACING="0" BORDERCOLOR=BLACK>
+<TR><TD><BIG>
+<B><CODE>
+Osoba
+</CODE></B>
+</BIG></TD></TR>
+<TR><TD>
+<I><SMALL>instance variables</SMALL></I><BR>
+<CODE>
+datum_narozeni :Date
+</CODE>
+<BR>
+<CODE>
+jmeno :String
+</CODE>
+<BR>
+<CODE>
+prijmeni :String
+</CODE>
+<BR>
+<CODE>
+zeme_puvodu :String
+</CODE>
+<BR>
+</TD></TR>
+<TR><TD>
+<I><SMALL>methods</SMALL></I><BR>
+<CODE>
+datum_narozeni
+</CODE>
+<BR>
+<CODE>
+datum_narozeni:
+</CODE>
+<BR>
+<CODE>
+initialize
+</CODE>
+<BR>
+<CODE>
+jmeno
+</CODE>
+<BR>
+<CODE>
+jmeno:
+</CODE>
+<BR>
+<CODE>
+prijmeni
+</CODE>
+<BR>
+<CODE>
+prijmeni:
+</CODE>
+<BR>
+<CODE>
+zeme_puvodu
+</CODE>
+<BR>
+<CODE>
+zeme_puvodu:
+</CODE>
+<BR>
+</TD></TR>
+</TABLE>
+</TD>
+<TD VALIGN="TOP">
+<P>
+
+</P>
+</TD>
+</TR>
+</TABLE>
+<H4>code of non-accessing methods: </H4>
+<UL>
+<LI>
+<B><CODE>
+initialize
+</CODE></B>
+<PRE>
+&quot;generated by Daskalos&quot;
+
+     super initialize.
+     jmeno := nil.
+     prijmeni := nil.
+     zeme_puvodu := nil.
+     datum_narozeni := nil.</PRE>
+</UL>
+<TABLE BORDER="0" CELLPADDING="3" CELLSPACING="0" WIDTH=100%>
+<TR>
+<TD WIDTH=20%>
+<TABLE WIDTH=95% BORDER="1" CELLSPACING="0" BORDERCOLOR=BLACK>
+<TR><TD><BIG>
+<B><CODE>
+Pujceni
+</CODE></B>
+</BIG></TD></TR>
+<TR><TD>
+<I><SMALL>instance variables</SMALL></I><BR>
+<CODE>
+co_pujcil :Object
+</CODE>
+<BR>
+<CODE>
+datum_pujceni :Date
+</CODE>
+<BR>
+<CODE>
+datum_vraceni :Date
+</CODE>
+<BR>
+<CODE>
+pujcovnik :Object
+</CODE>
+<BR>
+<CODE>
+zpracoval :Object
+</CODE>
+<BR>
+</TD></TR>
+<TR><TD>
+<I><SMALL>methods</SMALL></I><BR>
+<CODE>
+co_pujcil
+</CODE>
+<BR>
+<CODE>
+co_pujcil:
+</CODE>
+<BR>
+<CODE>
+datum_pujceni
+</CODE>
+<BR>
+<CODE>
+datum_pujceni:
+</CODE>
+<BR>
+<CODE>
+datum_vraceni
+</CODE>
+<BR>
+<CODE>
+datum_vraceni:
+</CODE>
+<BR>
+<CODE>
+initialize
+</CODE>
+<BR>
+<CODE>
+jeVraceno
+</CODE>
+<BR>
+<CODE>
+pujcovnik
+</CODE>
+<BR>
+<CODE>
+pujcovnik:
+</CODE>
+<BR>
+<CODE>
+zpracoval
+</CODE>
+<BR>
+<CODE>
+zpracoval:
+</CODE>
+<BR>
+</TD></TR>
+</TABLE>
+</TD>
+<TD VALIGN="TOP">
+<P>
+
+</P>
+</TD>
+</TR>
+</TABLE>
+<H4>code of non-accessing methods: </H4>
+<UL>
+<LI>
+<B><CODE>
+initialize
+</CODE></B>
+<PRE>
+&quot;generated by Daskalos&quot;
+
+     super initialize.
+     datum_pujceni := nil.
+     datum_vraceni := nil.
+     pujcovnik := nil.
+     co_pujcil := nil.
+     zpracoval := nil.</PRE>
+<LI>
+<B><CODE>
+jeVraceno
+</CODE></B>
+<PRE>
+	^datum_vraceni notNil</PRE>
+</UL>
+<TABLE BORDER="0" CELLPADDING="3" CELLSPACING="0" WIDTH=100%>
+<TR>
+<TD WIDTH=20%>
+<TABLE WIDTH=95% BORDER="1" CELLSPACING="0" BORDERCOLOR=BLACK>
+<TR><TD><BIG>
+<B><CODE>
+Autor
+</CODE></B>
+</BIG></TD></TR>
+<TR><TD>
+<I><SMALL>instance variables</SMALL></I><BR>
+</TD></TR>
+<TR><TD>
+<I><SMALL>methods</SMALL></I><BR>
+</TD></TR>
+</TABLE>
+</TD>
+<TD VALIGN="TOP">
+<P>
+
+</P>
+</TD>
+</TR>
+</TABLE>
+<H4>code of non-accessing methods: </H4>
+<UL>
+</UL>
+<TABLE BORDER="0" CELLPADDING="3" CELLSPACING="0" WIDTH=100%>
+<TR>
+<TD WIDTH=20%>
+<TABLE WIDTH=95% BORDER="1" CELLSPACING="0" BORDERCOLOR=BLACK>
+<TR><TD><BIG>
+<B><CODE>
+Zakaznik
+</CODE></B>
+</BIG></TD></TR>
+<TR><TD>
+<I><SMALL>instance variables</SMALL></I><BR>
+<CODE>
+cislo_zakaznika :String
+</CODE>
+<BR>
+</TD></TR>
+<TR><TD>
+<I><SMALL>methods</SMALL></I><BR>
+<CODE>
+cislo_zakaznika
+</CODE>
+<BR>
+<CODE>
+cislo_zakaznika:
+</CODE>
+<BR>
+<CODE>
+initialize
+</CODE>
+<BR>
+<CODE>
+Pujceni
+</CODE>
+<BR>
+</TD></TR>
+</TABLE>
+</TD>
+<TD VALIGN="TOP">
+<P>
+
+</P>
+</TD>
+</TR>
+</TABLE>
+<H4>code of non-accessing methods: </H4>
+<UL>
+<LI>
+<B><CODE>
+initialize
+</CODE></B>
+<PRE>
+&quot;generated by Daskalos&quot;
+
+     super initialize.
+     cislo_zakaznika := nil.</PRE>
+<LI>
+<B><CODE>
+Pujceni
+</CODE></B>
+<PRE>
+	^Pujceni anySatisfy: [:r | r pujcovnik = self]</PRE>
+</UL>
+<TABLE BORDER="0" CELLPADDING="3" CELLSPACING="0" WIDTH=100%>
+<TR>
+<TD WIDTH=20%>
+<TABLE WIDTH=95% BORDER="1" CELLSPACING="0" BORDERCOLOR=BLACK>
+<TR><TD><BIG>
+<B><CODE>
+Pracovnik
+</CODE></B>
+</BIG></TD></TR>
+<TR><TD>
+<I><SMALL>instance variables</SMALL></I><BR>
+<CODE>
+pocatek_prace :Date
+</CODE>
+<BR>
+</TD></TR>
+<TR><TD>
+<I><SMALL>methods</SMALL></I><BR>
+<CODE>
+initialize
+</CODE>
+<BR>
+<CODE>
+pocatek_prace
+</CODE>
+<BR>
+<CODE>
+pocatek_prace:
+</CODE>
+<BR>
+</TD></TR>
+</TABLE>
+</TD>
+<TD VALIGN="TOP">
+<P>
+
+</P>
+</TD>
+</TR>
+</TABLE>
+<H4>code of non-accessing methods: </H4>
+<UL>
+<LI>
+<B><CODE>
+initialize
+</CODE></B>
+<PRE>
+&quot;generated by Daskalos&quot;
+
+     super initialize.
+     pocatek_prace := nil.</PRE>
+</UL>
+<HR>
+<H2>Links</H2>
+<A HREF="Knihovna.xml">Data file</A> and 
+<A HREF="Knihovna.st">class source</A>.
+
+<BR>
+
+<BR>
+<CODE>
+Generated by Daskalos - Object Modeling Tutor &#40;C&#41; 2006 V. Merunka
+</CODE>
+
+<BR>
+<CODE>
+14.02.2025&#1075;.
+</CODE>
+</BODY></HTML>
