@@ -47,184 +47,242 @@ Knihovna</TITLE>
 <B>author&#40;s&#41;: </B>Carikov Leonid
 <BR>
 <P>
-Ukazka systemu knihovny
+Ukazka systemu knihovny<BR>
+ <BR>
+Zakaznik si muze pukcit knihu. Pujceni zpracovava pracovnik na pobocce.<BR>
+V systemu se pise datum pujceni&#44; datum vraceni v pripade jestli zakaznik knihu vratil&#44; jakou knihu pujcil&#44; kdo ji pujcil a kdo to zpracoval.<BR>
+Kazda kniha ma zanr&#44; datum vydani&#44; informace o originalnim jazyku a jmeno autora.<BR>
+<BR>
+Tridy a jejich atributy<BR>
+- Osoba : jmeno&#44; prijmeni&#44; datum_narozeni<BR>
+- Zakaznik: cislo_zakaznika<BR>
+- Pracovnik: pocatek_prace<BR>
+- Autor: zeme_puvodu<BR>
+- Pobocka: adresa&#44; cislo_popisne&#44; mesto&#44; psc<BR>
+- Kniha: nazev&#44; datum_vydani&#44; zanr<BR>
+- Pujceni: datum_pujceni&#44; datum_vraceni<BR>
+<BR>
+
 </P>
 
 <BR>
 <HR>
 <H2>Workspace</H2>
-<PRE>Human select: [:a | a zeme_puvodu = &#39;Anglie&#39;]
+<PRE>&quot;Vypise co zakaznik s jmenem Leonid pujcil&quot;
+&#40;Zakaznici select: [:x | x jmeno = &#39;Leonid&#39;]&#41;
+collect: [:y | y coPujcil]
 
-Book select: [:a | a datum_vydani year &gt; 1900 ]
+&quot;vypise co bylo vraceno&quot;
+Pujcovani select: [:x | x jeVraceno]
 
-pobocka := Shop detect: [:s | s adresa = &#39;Jana Masaryka&#39;].
-vedouci := pobocka vedouci.</PRE>
+&quot;Vypise knihy ktere byly pujcene a jejimz autorem je Alexandr&quot;
+Pujcovani select: [:x | x co_pujcil spisovatel jmeno = &#39;Alexandr&#39;]
+
+&quot;Vypise Pujcene knihy  ktere nebyly vraceny a trva to vic jak 90 dnu&quot;
+Pujcovani select: [:x | x Zadluzeni and: [x jeVraceno not]]
+
+&quot;Vypise zakazniky ktere pujcili vic nez jednu knihu&quot;
+Zakaznici select: [:x | x pocetPujcek &gt; 1]
+
+&quot;Vypise autory u kterych je v knihovne vic nez jedna kniha&quot;
+Autori select: [:x | x kolikNapsal &gt; 1]
+
+
+
+&quot;Pravidlo - Vsechny pujcky maji datum pujceni&quot;
+&#40;Pujceni allInstances select: [:x | x datum_pujceni isNil]&#41; isEmpty
+
+&quot;Pravidlo - Vsechny pucky zpracoval pracovnik&quot;
+&#40;Pujceni allInstances select: [:x | x zpracoval isNil]&#41; isEmpty
+
+&quot;Pravidlo - Vsechny knihy museji mit autora&quot;
+&#40;Kniha allInstances select: [:x | x spisovatel isNil]&#41; isEmpty</PRE>
 <H4>Workspace Objects</H4>
 <UL>
 
 <BR>
 <LI>
 <CODE>
-Book :Set
+Autori :Set
 </CODE>
 <LI>
 <CODE>
-Human :Set
+Knihy :Set
 </CODE>
 <LI>
 <CODE>
-Rent :Set
+Obchody :Set
 </CODE>
 <LI>
 <CODE>
-Shop :Set
+Pracovnici :Set
 </CODE>
 <LI>
 <CODE>
-pobocka :Pobocka
+Pujcovani :Set
 </CODE>
 <LI>
 <CODE>
-vedouci :Pracovnik
+Zakaznici :Set
 </CODE>
 </UL>
 
 <BR>
 <HR>
 <H2>Script</H2>
-<PRE>| isNul |
-	Human := Set new.
-Book := Set new.
-Shop := Set new.
-Rent := Set new.
+<PRE>Knihy := Set new.
+Obchody  := Set new.
+Pujcovani := Set new.
+Zakaznici := Set new.
+Pracovnici := Set new.
+Autori := Set new.
 
-o1 := Autor new.
-o1 jmeno: &#39;Alexandr&#39;.
-o1 prijmeni: &#39;Puskin&#39;.
-o1 zeme_puvodu: &#39;Rusko&#39;.
-o1 datum_narozeni: &#39;6 Jun 1799&#39; asDate.
-Human add: o1.
+a1 := Autor new.
+a1 jmeno: &#39;Alexandr&#39;.
+a1 prijmeni: &#39;Puskin&#39;.
+a1 zeme_puvodu: &#39;Rusko&#39;.
+a1 datum_narozeni: &#39;6 Jun 1799&#39; asDate.
+Autori add: a1.
 
-o2 := Autor new.
-o2 jmeno: &#39;Karel&#39;.
-o2 prijmeni: &#39;Capek&#39;.
-o2 zeme_puvodu: &#39;Cesko&#39;.
-o2 datum_narozeni: &#39;9 Jan 1890&#39; asDate.
-Human add: o2.
+a2 := Autor new.
+a2 jmeno: &#39;Karel&#39;.
+a2 prijmeni: &#39;Capek&#39;.
+a2 zeme_puvodu: &#39;Cesko&#39;.
+a2 datum_narozeni: &#39;9 Jan 1890&#39; asDate.
+Autori add: a2.
 
-o3 := Autor new.
-o3 jmeno: &#39;George&#39;.
-o3 prijmeni: &#39;Orwell&#39;.
-o3 zeme_puvodu: &#39;Anglie&#39;.
-o3 datum_narozeni: &#39;25 Jun 1903&#39; asDate.
-Human add: o3.
+a3 := Autor new.
+a3 jmeno: &#39;George&#39;.
+a3 prijmeni: &#39;Orwell&#39;.
+a3 zeme_puvodu: &#39;Anglie&#39;.
+a3 datum_narozeni: &#39;25 Jun 1903&#39; asDate.
+Autori add: a3.
 
-o4 := Autor new.
-o4 jmeno: &#39;Ernest&#39;.
-o4 prijmeni: &#39;Hamingway&#39;.
-o4 zeme_puvodu: &#39;Anglie&#39;.
-o4 datum_narozeni: &#39;21 Jul 1899&#39; asDate.
-Human add: o4.
+a4 := Autor new.
+a4 jmeno: &#39;Ernest&#39;.
+a4 prijmeni: &#39;Hamingway&#39;.
+a4 zeme_puvodu: &#39;Anglie&#39;.
+a4 datum_narozeni: &#39;21 Jul 1899&#39; asDate.
+Autori add: a4.
 
-o5 := Zakaznik new.
-o5 jmeno: &#39;Leonid&#39;.
-o5 prijmeni: &#39;Carikov&#39;.
-o5 zeme_puvodu: &#39;Rusko&#39;.
-o5 cislo_zakaznika: &#39;12345&#39;.
-o5 datum_narozeni: &#39;10 Dec 2003&#39; asDate.
-Human add: o5.
+z1 := Zakaznik new.
+z1 jmeno: &#39;Leonid&#39;.
+z1 prijmeni: &#39;Carikov&#39;.
+z1 cislo_zakaznika: &#39;12345&#39;.
+z1 datum_narozeni: &#39;10 Dec 2003&#39; asDate.
+Zakaznici add: z1.
 
-o6 := Zakaznik new.
-o6 jmeno: &#39;Vladimir&#39;.
-o6 prijmeni: &#39;Scerbakov&#39;.
-o6 zeme_puvodu: &#39;Cesko&#39;.
-o6 cislo_zakaznika: &#39;54321&#39;.
-o6 datum_narozeni: &#39;9 Nov 2002&#39; asDate.
-Human add: o6.
+z2 := Zakaznik new.
+z2 jmeno: &#39;Jan&#39;.
+z2 prijmeni: &#39;Novak&#39;.
+z2 cislo_zakaznika: &#39;79878&#39;.
+z2 datum_narozeni: &#39;15 Dec 2005&#39; asDate.
+Zakaznici add: z2.
 
-o7 := Pracovnik new.
-o7 jmeno: &#39;Petr&#39;.
-o7 prijmeni: &#39;Blaha&#39;.
-o7 zeme_puvodu: &#39;Cesko&#39;.
-o7 pocatek_prace: &#39;14 Feb 2024&#39; asDate.
-o7 datum_narozeni: &#39;26 Nov 1999&#39; asDate.
-Human add: o7.
+z3:= Zakaznik new.
+z3 jmeno: &#39;Vladimir&#39;.
+z3 prijmeni: &#39;Scerbakov&#39;.
+z3 cislo_zakaznika: &#39;54321&#39;.
+z3 datum_narozeni: &#39;9 Nov 2002&#39; asDate.
+Zakaznici add: z3.
 
-o8 := Pracovnik new.
-o8 jmeno: &#39;Jakub&#39;.
-o8 prijmeni: &#39;Fiala&#39;.
-o8 zeme_puvodu: &#39;Slovensko&#39;.
-o8 pocatek_prace: &#39;1 Dec 2020&#39; asDate.
-o8 datum_narozeni: &#39;7 May 1987&#39; asDate.
-Human add: o8.
+p1 := Pracovnik new.
+p1 jmeno: &#39;Petr&#39;.
+p1 prijmeni: &#39;Blaha&#39;.
+p1 pocatek_prace: &#39;14 Feb 2024&#39; asDate.
+p1 datum_narozeni: &#39;26 Nov 1999&#39; asDate.
+Pracovnici add: p1.
+
+p2 := Pracovnik new.
+p2 jmeno: &#39;Jakub&#39;.
+p2 prijmeni: &#39;Fiala&#39;.
+p2 pocatek_prace: &#39;1 Dec 2020&#39; asDate.
+p2 datum_narozeni: &#39;7 May 1987&#39; asDate.
+Pracovnici add: p2.
 
 b1 := Kniha new.
 b1 nazev: &#39;Starec a More&#39;.
 b1 datum_vydani: &#39;1 Sep 1952&#39; asDate.
 b1 zanr: &#39;Novela&#39;.
-b1 spisovatel: o4.
-Book add: b1.
+b1 spisovatel: a4.
+Knihy add: b1.
 
 b2 := Kniha new.
 b2 nazev: &#39;1984&#39;.
 b2 datum_vydani: &#39;8 Jun 1949&#39; asDate.
 b2 zanr: &#39;Roman&#39;.
-b2 spisovatel: o3.
-Book add: b2.
+b2 spisovatel: a3.
+Knihy add: b2.
 
 b3 := Kniha new.
 b3 nazev: &#39;Ruslan a Ludmila&#39;.
 b3 datum_vydani: &#39;1 Jan 1820&#39; asDate.
 b3 zanr: &#39;Poema&#39;.
-b3 spisovatel: o1.
-Book add: b3.
+b3 spisovatel: a1.
+Knihy add: b3.
 
 b4 := Kniha new.
 b4 nazev: &#39;R.U.R.&#39;.
 b4 datum_vydani: &#39;1 Jan 1920&#39; asDate.
 b4 zanr: &#39;Drama&#39;.
-b4 spisovatel: o2.
-Book add: b4.
+b4 spisovatel: a2.
+Knihy add: b4.
+
+b5 := Kniha new.
+b5 nazev: &#39;Bila Nemoc&#39;.
+b5 datum_vydani: &#39;1 Jan 1937&#39; asDate.
+b5 zanr: &#39;Drama&#39;.
+b5 spisovatel: a2.
+Knihy add: b5.
 
 s1 := Pobocka new.
 s1 adresa: &#39;Jana Masaryka&#39;.
 s1 cislo_popisne: &#39;10&#39;.
 s1 mesto: &#39;Praha&#39;.
 s1 psc: &#39;12000&#39;.
-s1 vedouci: o7.
-Shop add: s1.
+s1 vedouci: p1.
+Obchody add: s1.
 
 s2 := Pobocka new.
 s2 adresa: &#39;Veslarska&#39;.
 s2 cislo_popisne: &#39;199&#39;.
 s2 mesto: &#39;Brno&#39;.
 s2 psc: &#39;63700&#39;.
-s2 vedouci: o8.
-Shop add: s2.
+s2 vedouci: p2.
+Obchody add: s2.
 
 r1 := Pujceni new.
 r1 datum_pujceni: &#39;14 Nov 2024&#39; asDate.
 r1 datum_vraceni: &#39;20 Dec 2024&#39; asDate.
-r1 pujcovnik: o5.
+r1 pujcovnik: z1.
 r1 co_pujcil: b1.
-r1 zpracoval: o7.
-Rent add: r1.
+r1 zpracoval: p1.
+Pujcovani add: r1.
 
 r2 := Pujceni new.
 r2 datum_pujceni: &#39;1 Jun 2023&#39; asDate.
 r2 datum_vraceni: &#39;15 Jul 2023&#39; asDate.
-r2 pujcovnik: o6.
+r2 pujcovnik: z2.
 r2 co_pujcil: b2.
-r2 zpracoval: o8.
-Rent add: r2.
+r2 zpracoval: p2.
+Pujcovani add: r2.
+
+r4 := Pujceni new.
+r4 datum_pujceni: &#39;1 Nov 2024&#39; asDate.
+r4 datum_vraceni: nil.
+r4 pujcovnik: z3.
+r4 co_pujcil: b4.
+r4 zpracoval: p2.
+Pujcovani add: r4.
 
 r3 := Pujceni new.
-r3 datum_pujceni: &#39;1 Jun 2025&#39; asDate.
-r3 datum_vraceni: isNul.
-r3 pujcovnik: o6.
+r3 datum_pujceni: &#39;1 Jun 2024&#39; asDate.
+r3 datum_vraceni: nil.
+r3 pujcovnik: z3.
 r3 co_pujcil: b3.
-r3 zpracoval: o8.
-Rent add: r3.</PRE>
+r3 zpracoval: p2.
+Pujcovani add: r3.
+</PRE>
 <HR>
 <H2>Diagram</H2>
 <IMG SRC="Knihovna.gif">
@@ -313,7 +371,7 @@ vedouci:
 </TD>
 <TD VALIGN="TOP">
 <P>
-
+Vsechny pobocky ktere jsou
 </P>
 </TD>
 </TR>
@@ -409,7 +467,7 @@ zanr:
 </TD>
 <TD VALIGN="TOP">
 <P>
-
+Knihy ktere jsou a jejich zakladni informace
 </P>
 </TD>
 </TR>
@@ -434,97 +492,6 @@ puvod
 </CODE></B>
 <PRE>
 	^spisovatel zeme_puvodu</PRE>
-</UL>
-<TABLE BORDER="0" CELLPADDING="3" CELLSPACING="0" WIDTH=100%>
-<TR>
-<TD WIDTH=20%>
-<TABLE WIDTH=95% BORDER="1" CELLSPACING="0" BORDERCOLOR=BLACK>
-<TR><TD><BIG>
-<B><CODE>
-Osoba
-</CODE></B>
-</BIG></TD></TR>
-<TR><TD>
-<I><SMALL>instance variables</SMALL></I><BR>
-<CODE>
-datum_narozeni :Date
-</CODE>
-<BR>
-<CODE>
-jmeno :String
-</CODE>
-<BR>
-<CODE>
-prijmeni :String
-</CODE>
-<BR>
-<CODE>
-zeme_puvodu :String
-</CODE>
-<BR>
-</TD></TR>
-<TR><TD>
-<I><SMALL>methods</SMALL></I><BR>
-<CODE>
-datum_narozeni
-</CODE>
-<BR>
-<CODE>
-datum_narozeni:
-</CODE>
-<BR>
-<CODE>
-initialize
-</CODE>
-<BR>
-<CODE>
-jmeno
-</CODE>
-<BR>
-<CODE>
-jmeno:
-</CODE>
-<BR>
-<CODE>
-prijmeni
-</CODE>
-<BR>
-<CODE>
-prijmeni:
-</CODE>
-<BR>
-<CODE>
-zeme_puvodu
-</CODE>
-<BR>
-<CODE>
-zeme_puvodu:
-</CODE>
-<BR>
-</TD></TR>
-</TABLE>
-</TD>
-<TD VALIGN="TOP">
-<P>
-
-</P>
-</TD>
-</TR>
-</TABLE>
-<H4>code of non-accessing methods: </H4>
-<UL>
-<LI>
-<B><CODE>
-initialize
-</CODE></B>
-<PRE>
-&quot;generated by Daskalos&quot;
-
-     super initialize.
-     jmeno := nil.
-     prijmeni := nil.
-     zeme_puvodu := nil.
-     datum_narozeni := nil.</PRE>
 </UL>
 <TABLE BORDER="0" CELLPADDING="3" CELLSPACING="0" WIDTH=100%>
 <TR>
@@ -601,6 +568,10 @@ pujcovnik:
 </CODE>
 <BR>
 <CODE>
+Zadluzeni
+</CODE>
+<BR>
+<CODE>
 zpracoval
 </CODE>
 <BR>
@@ -613,7 +584,7 @@ zpracoval:
 </TD>
 <TD VALIGN="TOP">
 <P>
-
+Proces ktery uklada informace o zapujceni knihy
 </P>
 </TD>
 </TR>
@@ -639,6 +610,12 @@ jeVraceno
 </CODE></B>
 <PRE>
 	^datum_vraceni notNil</PRE>
+<LI>
+<B><CODE>
+Zadluzeni
+</CODE></B>
+<PRE>
+	^datum_pujceni day &gt; 90</PRE>
 </UL>
 <TABLE BORDER="0" CELLPADDING="3" CELLSPACING="0" WIDTH=100%>
 <TR>
@@ -646,26 +623,87 @@ jeVraceno
 <TABLE WIDTH=95% BORDER="1" CELLSPACING="0" BORDERCOLOR=BLACK>
 <TR><TD><BIG>
 <B><CODE>
-Autor
+Osoba
 </CODE></B>
 </BIG></TD></TR>
 <TR><TD>
 <I><SMALL>instance variables</SMALL></I><BR>
+<CODE>
+datum_narozeni :Date
+</CODE>
+<BR>
+<CODE>
+jmeno :String
+</CODE>
+<BR>
+<CODE>
+prijmeni :String
+</CODE>
+<BR>
 </TD></TR>
 <TR><TD>
 <I><SMALL>methods</SMALL></I><BR>
+<CODE>
+celeJmeno
+</CODE>
+<BR>
+<CODE>
+datum_narozeni
+</CODE>
+<BR>
+<CODE>
+datum_narozeni:
+</CODE>
+<BR>
+<CODE>
+initialize
+</CODE>
+<BR>
+<CODE>
+jmeno
+</CODE>
+<BR>
+<CODE>
+jmeno:
+</CODE>
+<BR>
+<CODE>
+prijmeni
+</CODE>
+<BR>
+<CODE>
+prijmeni:
+</CODE>
+<BR>
 </TD></TR>
 </TABLE>
 </TD>
 <TD VALIGN="TOP">
 <P>
-
+Trida rodic pro osoby
 </P>
 </TD>
 </TR>
 </TABLE>
 <H4>code of non-accessing methods: </H4>
 <UL>
+<LI>
+<B><CODE>
+celeJmeno
+</CODE></B>
+<PRE>
+	^self jmeno &#44; &#39; &#39; &#44; self prijmeni</PRE>
+<LI>
+<B><CODE>
+initialize
+</CODE></B>
+<PRE>
+&quot;generated by Daskalos&quot;
+
+     super initialize.
+     jmeno := nil.
+     prijmeni := nil.
+     datum_narozeni := nil.</PRE>
 </UL>
 <TABLE BORDER="0" CELLPADDING="3" CELLSPACING="0" WIDTH=100%>
 <TR>
@@ -694,11 +732,15 @@ cislo_zakaznika:
 </CODE>
 <BR>
 <CODE>
+coPujcil
+</CODE>
+<BR>
+<CODE>
 initialize
 </CODE>
 <BR>
 <CODE>
-Pujceni
+pocetPujcek
 </CODE>
 <BR>
 </TD></TR>
@@ -706,13 +748,20 @@ Pujceni
 </TD>
 <TD VALIGN="TOP">
 <P>
-
+Zakaznik ktery si muze knihu pujcit
 </P>
 </TD>
 </TR>
 </TABLE>
 <H4>code of non-accessing methods: </H4>
 <UL>
+<LI>
+<B><CODE>
+coPujcil
+</CODE></B>
+<PRE>
+	^&#40;Pujceni allInstances select: [:x | x pujcovnik = self]&#41; 
+		collect: [:y | y co_pujcil]</PRE>
 <LI>
 <B><CODE>
 initialize
@@ -724,10 +773,10 @@ initialize
      cislo_zakaznika := nil.</PRE>
 <LI>
 <B><CODE>
-Pujceni
+pocetPujcek
 </CODE></B>
 <PRE>
-	^Pujceni anySatisfy: [:r | r pujcovnik = self]</PRE>
+	^self coPujcil size</PRE>
 </UL>
 <TABLE BORDER="0" CELLPADDING="3" CELLSPACING="0" WIDTH=100%>
 <TR>
@@ -764,7 +813,7 @@ pocatek_prace:
 </TD>
 <TD VALIGN="TOP">
 <P>
-
+Pracovnik ktery pracuje v knihovne
 </P>
 </TD>
 </TR>
@@ -781,6 +830,68 @@ initialize
      super initialize.
      pocatek_prace := nil.</PRE>
 </UL>
+<TABLE BORDER="0" CELLPADDING="3" CELLSPACING="0" WIDTH=100%>
+<TR>
+<TD WIDTH=20%>
+<TABLE WIDTH=95% BORDER="1" CELLSPACING="0" BORDERCOLOR=BLACK>
+<TR><TD><BIG>
+<B><CODE>
+Autor
+</CODE></B>
+</BIG></TD></TR>
+<TR><TD>
+<I><SMALL>instance variables</SMALL></I><BR>
+<CODE>
+zeme_puvodu :String
+</CODE>
+<BR>
+</TD></TR>
+<TR><TD>
+<I><SMALL>methods</SMALL></I><BR>
+<CODE>
+initialize
+</CODE>
+<BR>
+<CODE>
+kolikNapsal
+</CODE>
+<BR>
+<CODE>
+zeme_puvodu
+</CODE>
+<BR>
+<CODE>
+zeme_puvodu:
+</CODE>
+<BR>
+</TD></TR>
+</TABLE>
+</TD>
+<TD VALIGN="TOP">
+<P>
+Autory knih
+</P>
+</TD>
+</TR>
+</TABLE>
+<H4>code of non-accessing methods: </H4>
+<UL>
+<LI>
+<B><CODE>
+initialize
+</CODE></B>
+<PRE>
+&quot;generated by Daskalos&quot;
+
+     super initialize.
+     zeme_puvodu := nil.</PRE>
+<LI>
+<B><CODE>
+kolikNapsal
+</CODE></B>
+<PRE>
+	^&#40;Kniha allInstances select: [:x | x spisovatel = self]&#41; size</PRE>
+</UL>
 <HR>
 <H2>Links</H2>
 <A HREF="Knihovna.xml">Data file</A> and 
@@ -795,6 +906,6 @@ Generated by Daskalos - Object Modeling Tutor &#40;C&#41; 2006 V. Merunka
 
 <BR>
 <CODE>
-14.02.2025&#1075;.
+19.04.2025&#1075;.
 </CODE>
 </BODY></HTML>
